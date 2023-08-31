@@ -22,6 +22,6 @@ function SinhVien(
   //method
   this.tinhDTB = function () {
     var dtb = 0;
-    dtb = (this.diemToan + this.diemLy + this.diemHoa) / 3;
+    return (dtb = (this.diemToan + this.diemLy + this.diemHoa) / 3).toFixed(1);
   };
 }
