@@ -1,5 +1,5 @@
 function kiemTraRong(value, idErr, message) {
-  // trim: xóa space ở đầu và cuối chuỗi
+  // trim: xóa space ở đầu và cuối chuỗi, chỉ áp dụng với chuỗi(string)
   if (value.trim() === "") {
     document.querySelector(idErr).innerHTML = message;
     return false;
