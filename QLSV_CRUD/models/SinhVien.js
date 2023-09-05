@@ -15,7 +15,7 @@ function SinhVien(
   this.matKhau = _matKhau;
   this.ngaySinh = _ngaySinh;
   this.khoaHoc = _khoaHoc;
-  this.diemToan = _diemHoa;
+  this.diemToan = _diemToan;
   this.diemLy = _diemLy;
   this.diemHoa = _diemHoa;
 

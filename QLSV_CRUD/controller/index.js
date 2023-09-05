@@ -110,7 +110,7 @@ function layThongTinTuForm() {
   var matKhau = getElm("#txtPass").value;
   var ngaySinh = getElm("#txtNgaySinh").value;
   var khoaHoc = getElm("#khSV").value;
-  var diemToan = Number(getElm("#txtDiemToan").value);
+  var diemToan = +getElm("#txtDiemToan").value;
   var diemLy = +getElm("#txtDiemLy").value;
   var diemHoa = +getElm("#txtDiemHoa").value;
 
@@ -143,8 +143,11 @@ function layThongTinTuForm() {
 
 function themSV() {
   var sv = layThongTinTuForm();
+  console.log("sv: ", sv);
 
   // kiểm tra khi tất cả input hợp lệ thì mới thêm sv
+
+  // true && false && true && true  => false
 
   // kiểm tra mã
   var valid =
@@ -157,11 +160,12 @@ function themSV() {
     ) &&
     kiemTraDoDai(
       sv.maSV,
-      "#spanMaSV",
       4,
       6,
+      "#spanMaSV",
       "Mã sinh viên phải từ 4~6 ký tự !"
     );
+  console.log("valid sau khi kiem tra ma", valid);
 
   // kiểm tra tên
   valid &=
@@ -178,9 +182,9 @@ function themSV() {
 
   // kiểm tra mật khẩu
   valid &=
-    kiemTraRong(sv.email, "#spanMatKhau", "Mật khẩu không được để trống !") &&
-    kiemTraEmail(
-      sv.email,
+    kiemTraRong(sv.matKhau, "#spanMatKhau", "Mật khẩu không được để trống !") &&
+    kiemTraMatKhau(
+      sv.matKhau,
       "#spanMatKhau",
       "Mật khẩu phải có 8 đến 20 ký tự, trong đó có ít nhất một chữ thường, một chữ hoa, một chữ số và một ký tự đặc biệt"
     );
@@ -200,13 +204,16 @@ function themSV() {
   );
 
   // kiểm tra các input điểm chỉ được nhập số. khi không nhập mặc định input nhận 0 do ép kiểu khi lấy giá trị từ form.
-  valid &=
-    kiemTraSo(sv.diemToan, "#spanToan", "Điểm chỉ được nhập số !") &
-    kiemTraSo(sv.diemLy, "#spanLy", "Điểm chỉ được nhập số !") &
-    kiemTraSo(sv.diemHoa, "#spanHoa", "Điểm chỉ được nhập số !");
+  //điểm toán
+  valid &= kiemTraSo(sv.diemToan, "#spanToan", "Điểm chỉ được nhập số !");
+
+  // điểm Lý
+  valid &= kiemTraSo(sv.diemLy, "#spanLy", "Điểm chỉ được nhập số !");
+
+  // điểm Hóa
+  valid &= kiemTraSo(sv.diemHoa, "#spanHoa", "Điểm chỉ được nhập số !");
 
   console.log("valid", valid);
-  console.log("sinhvien", sv);
   if (valid) {
     dssv._themSinhVien(sv);
     console.log("dssv", dssv.students);
@@ -255,6 +262,27 @@ function capNhatSinhVien() {
   console.log("Sinh Vien Sau Khi Cap Nhat", sv);
 }
 
+//tìm kiếm
+document.querySelector("#btnSearch").onclick = function () {
+  // toLowerCase: convert text về chữ thường
+  // ?. : Optional chaining (?.)
+  var textSearch = document
+    .querySelector("#txtSearch")
+    .value.trim()
+    ?.toLowerCase();
+  var result = [];
+
+  if (textSearch.length > 0) {
+    result = dssv.students.filter(function (sv) {
+      return sv.tenSV.toLowerCase().includes(textSearch);
+    });
+
+    renderTable(result);
+  } else {
+    renderTable(dssv.students);
+  }
+};
+
 // truthy & falsy
 // var test = false;
 // // nếu biến test nó đúng thì sẽ chạy vào if
@@ -297,4 +325,5 @@ introduce("alice", function (name) {
 // toán tử logic
 // true & true  = true(1);
 // true & true & 1 = true(1);
-// valid &= true => valid = valid & false => false;
+// valid &= true => valid = valid & true => true;
+// valid &= false => valid = valid & false => false;

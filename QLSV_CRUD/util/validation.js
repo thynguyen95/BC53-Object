@@ -1,4 +1,5 @@
 function kiemTraRong(value, idErr, message) {
+  // trim: xóa space ở đầu và cuối chuỗi
   if (value.trim() === "") {
     document.querySelector(idErr).innerHTML = message;
     return false;
@@ -50,7 +51,7 @@ function kiemTraMatKhau(value, idErr, message) {
   }
 }
 
-function kiemTraDoDai(value, idErr, min, max, message) {
+function kiemTraDoDai(value, min, max, idErr, message) {
   var length = value.length;
   if (length >= min && length <= max) {
     document.querySelector(idErr).innerHTML = "";
@@ -62,9 +63,12 @@ function kiemTraDoDai(value, idErr, min, max, message) {
 }
 
 function kiemTraTrung(id, dssv, idErr, message) {
-  let viTri = dssv.findIndex(function (sv) {
+  // findIndex: tìm vị trí index, khi mà thỏa điều kiện tìm thấy thì trả về vị trí index, còn khi ko thỏa điều kiện/ko tìm thấy thì trả về về -1
+  var viTri = dssv.findIndex(function (sv) {
     return sv.maSV == id;
   });
+  console.log("vị trí", viTri);
+
   if (viTri != -1) {
     //  tìm thấy
     document.querySelector(idErr).innerHTML = message;
@@ -79,6 +83,7 @@ function kiemTraSo(value, idErr, message) {
   const re = /^[0-9]+$/;
 
   var isString = re.test(value);
+  console.log("isString: ", isString);
   if (isString) {
     document.querySelector(idErr).innerHTML = "";
     return true;
