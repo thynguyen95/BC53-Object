@@ -1,3 +1,7 @@
+function showMessage(idTag, message) {
+  document.getElementById(idTag).innerHTML = message;
+}
+
 function kiemTraRong(value, idErr, message) {
   if (value.trim() === "") {
     document.querySelector(idErr).innerHTML = message;
@@ -87,8 +91,3 @@ function kiemTraSo(value, idErr, message) {
     return false;
   }
 }
-
-// + kiểm tra tên sv chỉ được nhập chữ.
-// + kiểm tra mật khẩu theo quy tắc mà bạn muốn
-// + kiểm tra các input điểm chỉ được nhập số.
-// + kiểm tra độ dài(mk chỉ từ 6~10 kí tự )

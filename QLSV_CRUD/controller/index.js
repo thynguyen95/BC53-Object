@@ -67,7 +67,8 @@ function renderTable(listArr) {
   var htmlString = "";
   for (var i = 0; i < listArr.length; i++) {
     var sinhVien = listArr[i];
-    htmlString += `<tr>
+    htmlString += `
+    <tr>
       <td>${sinhVien.maSV}</td>
       <td>${sinhVien.tenSV}</td>
       <td>${sinhVien.email}</td>
@@ -146,25 +147,66 @@ function themSV() {
   // kiểm tra khi tất cả input hợp lệ thì mới thêm sv
 
   // kiểm tra mã
-  var valid = kiemTraRong(
-    sv.maSV,
-    "#spanMaSV",
-    "Mã sinh viên không được để trống !"
-  );
+  var valid =
+    kiemTraRong(sv.maSV, "#spanMaSV", "Mã sinh viên không được để trống !") &&
+    kiemTraTrung(
+      sv.maSV,
+      dssv.students,
+      "#spanMaSV",
+      "Mã sinh viên đã tồn tại"
+    ) &&
+    kiemTraDoDai(
+      sv.maSV,
+      "#spanMaSV",
+      4,
+      6,
+      "Mã sinh viên phải từ 4~6 ký tự !"
+    );
 
   // kiểm tra tên
-  valid &= kiemTraRong(
-    sv.tenSV,
-    "#spanTenSV",
-    "Tên sinh viên không được để trống !"
-  );
+  valid &=
+    kiemTraRong(
+      sv.tenSV,
+      "#spanTenSV",
+      "Tên sinh viên không được để trống !"
+    ) && kiemTraChuoi(sv.tenSV, "#spanTenSV", "Tên sinh viên phải là chữ !");
 
   // kiểm tra định dạng email
   valid &=
-    kiemTraRong(sv.email, "#spanEmailSV", "Email  không được để trống !") &&
+    kiemTraRong(sv.email, "#spanEmailSV", "Email không được để trống !") &&
     kiemTraEmail(sv.email, "#spanEmailSV", "Email không đúng định dạng !");
 
+  // kiểm tra mật khẩu
+  valid &=
+    kiemTraRong(sv.email, "#spanMatKhau", "Mật khẩu không được để trống !") &&
+    kiemTraEmail(
+      sv.email,
+      "#spanMatKhau",
+      "Mật khẩu phải có 8 đến 20 ký tự, trong đó có ít nhất một chữ thường, một chữ hoa, một chữ số và một ký tự đặc biệt"
+    );
+
+  //kiểm tra ngày sinh
+  valid &= kiemTraRong(
+    sv.ngaySinh,
+    "#spanNgaySinh",
+    "Ngày sinh không được để trống !"
+  );
+
+  //kiểm tra khóa học
+  valid &= kiemTraRong(
+    sv.ngaySinh,
+    "#spanKhoaHoc",
+    "Khóa học không được để trống !"
+  );
+
+  // kiểm tra các input điểm chỉ được nhập số. khi không nhập mặc định input nhận 0 do ép kiểu khi lấy giá trị từ form.
+  valid &=
+    kiemTraSo(sv.diemToan, "#spanToan", "Điểm chỉ được nhập số !") &
+    kiemTraSo(sv.diemLy, "#spanLy", "Điểm chỉ được nhập số !") &
+    kiemTraSo(sv.diemHoa, "#spanHoa", "Điểm chỉ được nhập số !");
+
   console.log("valid", valid);
+  console.log("sinhvien", sv);
   if (valid) {
     dssv._themSinhVien(sv);
     console.log("dssv", dssv.students);
